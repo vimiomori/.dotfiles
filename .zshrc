@@ -44,7 +44,6 @@ export NVM_DIR="$HOME/.nvm"
 
 ZSH_THEME="mortalscumbag"
 
-# keep at bottom
 source $ZSH/oh-my-zsh.sh
 alias python='python3'
 alias xampp='/usr/bin/clear; ssh -i '/Users/vi/.bitnami/stackman/machines/xampp/ssh/id_rsa' -o StrictHostKeyChecking=no 'root@192.168.64.2''
