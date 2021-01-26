@@ -64,7 +64,6 @@ alias rm-untagged="docker images --no-trunc | grep '<none>' | awk '{ print $3 }'
           | xargs docker rmi"
 alias clean="docker ps --filter status=dead --filter status=exited -aq \
           | xargs docker rm -v"
-alias zeals='cd ~/Dev/Zeals'
 alias tree='tree -I "*pycache*" --dirsfirst'
 alias stg='kubectl config use-context gke_fanp-stg_asia-northeast1_fanp'
 alias prd='kubectl config use-context gke_fanp-prd_asia-northeast1_fanp'
@@ -78,11 +77,6 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # bug with python3.7 support for system vim
 # alias vim='/usr/local/Cellar/macvim/8.1-153/MacVim.app/Contents/MacOS/Vim'
-alias dog='cd ~/KDS'
-alias dog-back='cd ~/KDS/esports-platform-backend'
-alias dog-front='cd ~/KDS/esports-platform-frontend'
-alias kds='~/KDS/esports-platform-backend/node_modules/.bin/sequelize'
-alias kds-migrate='cd ~/KDS/esports-platform-backend && node_modules/.bin/sequelize db:migrate'
 alias check-port='lsof -i -P -n | grep LISTEN'
 alias kill-rails='kill -9 $(cat tmp/pids/server.pid)'
 alias prune-branches='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
