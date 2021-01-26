@@ -1,27 +1,26 @@
 export LC_ALL=en_US.UTF-8
 export ZSH=/Users/vi/.oh-my-zsh
-# export TERM=screen-256color
 # export GOPATH="$HOME/bin"
 path=(
     $path
-#		$GOPATH/bin
-		/usr/local/go/bin
-		/bin
-		/sbin
-		/usr/bin
-		/usr/local/opt/ruby/bin
-		/usr/local/bin
-		/usr/local/sbin
-		~/bin
+#	$GOPATH/bin
+	/usr/local/go/bin
+	/bin
+	/sbin
+	/usr/bin
+	/usr/local/opt/ruby/bin
+	/usr/local/bin
+	/usr/local/sbin
+	~/bin
     ~/.local/bin
-		/usr/local/opt/python@2/libexec/bin
-		/usr/local/opt/gettext/bin
-		/usr/local/mysql/bin
-		/Applications/Postgres.app/Contents/Versions/latest/bin
-		/usr/local/php5/bin
-		~/.cargo/bin
+	/usr/local/opt/python@2/libexec/bin
+	/usr/local/opt/gettext/bin
+	/usr/local/mysql/bin
+	/Applications/Postgres.app/Contents/Versions/latest/bin
+	/usr/local/php5/bin
+	~/.cargo/bin
     ~/.gem/ruby/2.0.0/bin
-		~/.rvm/gems/ruby-2.6.3/bin
+	~/.rvm/gems/ruby-2.6.3/bin
 )
 if [ -d "/usr/local/lib" ]; then
 	path+=/usr/local/lib
@@ -37,10 +36,10 @@ fi
 export GO111MODULE=on
 
 # Python Virtual Environments
-export WORKON_HOME=$HOME/.virtualenvs             	# Environments stored here
-export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
-export VIRTUALENVWRAPPER_VIRTUALENV="/usr/local/bin/virtualenv"
-source /usr/local/bin/virtualenvwrapper.sh
+# export WORKON_HOME=$HOME/.virtualenvs             	# Environments stored here
+# export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
+# export VIRTUALENVWRAPPER_VIRTUALENV="/usr/local/bin/virtualenv"
+# source /usr/local/bin/virtualenvwrapper.sh
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
@@ -61,23 +60,15 @@ alias update='git submodule update --remote'
 alias sshd='ssh -D 8080'
 alias mvim='mvim -v'
 alias update='sudo softwareupdate --install --all'
-alias db-setup='docker-compose exec jupiter-web bundle exec rake db:setup'
-alias db-migrate='docker-compose exec jupiter-web bundle exec rake db:migrate'
-alias db-dump='docker-compose exec fanp-db mysqldump -uroot --databases fanp fanp_test > fanp-db/99-dump.sql'
-alias up='docker-compose up'
-alias stop='docker-compose rm --stop --force'
 alias rm-untagged="docker images --no-trunc | grep '<none>' | awk '{ print $3 }' \
           | xargs docker rmi"
 alias clean="docker ps --filter status=dead --filter status=exited -aq \
           | xargs docker rm -v"
 alias zeals='cd ~/Dev/Zeals'
-alias test='docker-compose exec saturn-messenger python -m pytest -vv'
-alias lint='docker-compose exec saturn-messenger invoke lint'
-alias messenger-invoke='docker-compose run --rm saturn-messenger invoke'
 alias tree='tree -I "*pycache*" --dirsfirst'
 alias stg='kubectl config use-context gke_fanp-stg_asia-northeast1_fanp'
 alias prd='kubectl config use-context gke_fanp-prd_asia-northeast1_fanp'
-alias sandbox='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-region-cluster'
+alias dev='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-region-cluster'
 # alias sandbox='kubectl config use-context gke_zeals-sandbox_asia-northeast1_debug-fanp'
 # alias invoke='docker-compose run --rm saturn-messenger invoke'
 alias gget="ghq get"
