@@ -2,7 +2,7 @@ export LC_ALL=en_US.UTF-8
 export ZSH=/Users/vi/.oh-my-zsh
 # export GOPATH="$HOME/bin"
 path=(
-    $path
+	$path
 #	$GOPATH/bin
 	/usr/local/go/bin
 	/bin
@@ -12,15 +12,15 @@ path=(
 	/usr/local/bin
 	/usr/local/sbin
 	~/bin
-    ~/.local/bin
+	~/.local/bin
 	/usr/local/opt/python@2/libexec/bin
 	/usr/local/opt/gettext/bin
 	/usr/local/mysql/bin
 	/Applications/Postgres.app/Contents/Versions/latest/bin
 	/usr/local/php5/bin
 	~/.cargo/bin
-    ~/.gem/ruby/2.0.0/bin
-	~/.rvm/gems/ruby-2.6.3/bin
+	~/.gem/ruby/2.0.0/bin
+	~/.pyenv/bin
 )
 if [ -d "/usr/local/lib" ]; then
 	path+=/usr/local/lib
@@ -71,6 +71,7 @@ alias dev='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-re
 alias stg-db='cloud_sql_proxy -dir ~/cloudsql -instances=fanp-stg:asia-northeast1:fanp-stg'
 alias dev-db='kubectl port-forward -n database mysql-db-0 33306:3306'
 alias gget="ghq get"
+alias test=' docker-compose run --rm -e DB_DATABASE=fanp_test saturn python -m pytest -vv'
 
 # for managing dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -79,7 +80,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # alias vim='/usr/local/Cellar/macvim/8.1-153/MacVim.app/Contents/MacOS/Vim'
 alias check-port='lsof -i -P -n | grep LISTEN'
 alias kill-rails='kill -9 $(cat tmp/pids/server.pid)'
-alias prune-branches='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
+alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
 alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
 
 #================================================================================================
@@ -106,6 +107,17 @@ function kubectl() {
     command kubectl "$@"
 }
 
+function peco-get-pod () {
+    local selected_pod=$(kubectl get pods -n fanp -l app=saturn-worker -o name | peco --query "$LBUFFER")
+    if [ -n "$selected_pod" ]; then
+        BUFFER="kubectl exec -it ${selected_pod} -n fanp -c saturn-line -- sh"
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-get-pod
+bindkey '^p' peco-get-pod
+
 function peco-src () {
     local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
     if [ -n "$selected_dir" ]; then
@@ -129,8 +141,9 @@ function peco-git-delete-branch {
 		zle accept-line
 }
 zle -N peco-git-delete-branch
-bindkey 'db' peco-git-delete-branch
+bindkey '^dd' peco-git-delete-branch
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 source $(rvm 2.6.3 do rvm env --path)
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+## REMOVED: deploy key export
