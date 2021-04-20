@@ -33,8 +33,6 @@ if [ -t 1 ]; then
   cd ~
 fi 
 
-export GO111MODULE=on
-
 # Python Virtual Environments
 # export WORKON_HOME=$HOME/.virtualenvs             	# Environments stored here
 # export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
