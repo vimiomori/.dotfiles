@@ -1,9 +1,9 @@
 export LC_ALL=en_US.UTF-8
 export ZSH=/Users/vi/.oh-my-zsh
-# export GOPATH="$HOME/bin"
+export GOPATH=$HOME/src
+export PYTHONSTARTUP=/Users/vi/startup.py
 path=(
 	$path
-#	$GOPATH/bin
 	/usr/local/go/bin
 	/bin
 	/sbin
@@ -32,8 +32,6 @@ fi
 if [ -t 1 ]; then
   cd ~
 fi 
-
-export GO111MODULE=on
 
 # Python Virtual Environments
 # export WORKON_HOME=$HOME/.virtualenvs             	# Environments stored here
@@ -82,6 +80,8 @@ alias check-port='lsof -i -P -n | grep LISTEN'
 alias kill-rails='kill -9 $(cat tmp/pids/server.pid)'
 alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
 alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
+alias public-ip='ifconfig -u | grep 'inet ' | grep -v 127.0.0.1 | cut -d\  -f2 | head -1'
+alias docker-db='docker run -e POSTGRES_PASSWORD=password -d -p 54321:5432 postgres:latest'
 
 #================================================================================================
 #	                                   Plugins
@@ -147,3 +147,4 @@ source $(rvm 2.6.3 do rvm env --path)
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ## REMOVED: deploy key export
+export GOPRIVATE=github.com/zeals-co-ltd
