@@ -64,9 +64,15 @@ alias clean="docker ps --filter status=dead --filter status=exited -aq \
 alias tree='tree -I "*pycache*" --dirsfirst'
 alias stg='kubectl config use-context gke_fanp-stg_asia-northeast1_fanp'
 alias prd='kubectl config use-context gke_fanp-prd_asia-northeast1_fanp'
+<<<<<<< HEAD
 alias dev='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-region-v1'
 alias stg-db='cloud_sql_proxy -dir ~/cloudsql -instances=fanp-stg:asia-northeast1:fanp-stg'
 alias dev-db='kubectl port-forward -n database mysql-db-0 33306:3306'
+=======
+alias sandbox='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-region-cluster'
+# alias sandbox='kubectl config use-context gke_zeals-sandbox_asia-northeast1_debug-fanp'
+# alias invoke='docker-compose run --rm saturn-messenger invoke'
+>>>>>>> 14e6564 (update)
 alias gget="ghq get"
 alias test=' docker-compose run --rm -e DB_DATABASE=fanp_test saturn python -m pytest -vv'
 

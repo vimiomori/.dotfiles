@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/usr/local/etc/nginx'
+let g:netrw_dirhist_0='/Users/vi/src/github.com/puipuipartpicker/kbpartpicker/config/kbpartpicker.sql'
+let g:netrw_dirhist_9='/Users/vi/src/github.com/zeals-co-ltd/formless'
+let g:netrw_dirhist_8='/Users/vi/src/github.com/zeals-co-ltd/formless/src'
+let g:netrw_dirhist_7='/Users/vi/src/github.com/zeals-co-ltd/formless/src/automation'
+let g:netrw_dirhist_6='/Users/vi/src/github.com/zeals-co-ltd/formless/src/automation/client'
+let g:netrw_dirhist_5='/Users/vi/src/github.com/zeals-co-ltd/formless/src/automation'
+let g:netrw_dirhist_4='/Users/vi/src/github.com/zeals-co-ltd/formless/src'
+let g:netrw_dirhist_3='/Users/vi/src/github.com/zeals-co-ltd/formless'
+let g:netrw_dirhist_2='/Users/vi/src/github.com/puipuipartpicker/kbpartpicker/backend/.circleci'
