@@ -1,10 +1,14 @@
 export LC_ALL=en_US.UTF-8
-export ZSH=/Users/vi/.oh-my-zsh
+export ZSH=/Users/vivian.hsieh/.oh-my-zsh
 export GOPATH=$HOME/src
-export PYTHONSTARTUP=/Users/vi/startup.py
+export GOBIN=$GOPATH/bin
+export PYTHONSTARTUP=/Users/vivian.hsieh/startup.py
 path=(
 	$path
+  $GOPATH/bin
+  /opt/homebrew/bin/go
 	/usr/local/go/bin
+	~/Library/Python/3.9/bin
 	/bin
 	/sbin
 	/usr/bin
@@ -33,20 +37,17 @@ if [ -t 1 ]; then
   cd ~
 fi 
 
-# Python Virtual Environments
-# export WORKON_HOME=$HOME/.virtualenvs             	# Environments stored here
-# export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
-# export VIRTUALENVWRAPPER_VIRTUALENV="/usr/local/bin/virtualenv"
-# source /usr/local/bin/virtualenvwrapper.sh
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
 ZSH_THEME="mortalscumbag"
+#================================================================================================
+#	                                   Plugins
+#================================================================================================
+plugins=(
+	colorize
+)
 
 source $ZSH/oh-my-zsh.sh
+
 alias python='python3'
-alias xampp='/usr/bin/clear; ssh -i '/Users/vi/.bitnami/stackman/machines/xampp/ssh/id_rsa' -o StrictHostKeyChecking=no 'root@192.168.64.2''
 alias pip='pip3'
 alias ga='git add .'
 alias gc='git commit'
@@ -68,7 +69,7 @@ alias dev='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-re
 alias stg-db='cloud_sql_proxy -dir ~/cloudsql -instances=fanp-stg:asia-northeast1:fanp-stg'
 alias dev-db='kubectl port-forward -n database mysql-db-0 33306:3306'
 alias gget="ghq get"
-alias test=' docker-compose run --rm -e DB_DATABASE=fanp_test saturn python -m pytest -vv'
+alias test='cd ~/src/github.com/REDACTED_ORG/REDACTED_REPO_3/service/octopus-api && test-env-exec grc go test ./...'
 
 # for managing dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -81,41 +82,11 @@ alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /
 alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
 alias public-ip='ifconfig -u | grep 'inet ' | grep -v 127.0.0.1 | cut -d\  -f2 | head -1'
 alias docker-db='docker run -e POSTGRES_PASSWORD=password -d -p 54321:5432 postgres:latest'
-
-#================================================================================================
-#	                                   Plugins
-#================================================================================================
-#plugins=(
-#  git 
-#  vi-mode
-#  zsh-dircolors-solarized
-#  colorize
-#  bundler
-#)
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/vi/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/vi/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/vi/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/vi/google-cloud-sdk/completion.zsh.inc'; fi
-function kubectl() {
-    if ! type __start_kubectl >/dev/null 2>&1; then
-        source <(command kubectl completion zsh)
-    fi
-
-    command kubectl "$@"
-}
-
-function peco-get-pod () {
-    local selected_pod=$(kubectl get pods -n fanp -l app=saturn-worker -o name | peco --query "$LBUFFER")
-    if [ -n "$selected_pod" ]; then
-        BUFFER="kubectl exec -it ${selected_pod} -n fanp -c saturn-line -- sh"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-get-pod
-bindkey '^p' peco-get-pod
+alias go='grc go'
+alias assume-dev='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_DEV:role/switch-role-dev)"'
+alias assume-stg='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-ops)"'
+alias assume-prd='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_PRD:role/saascore-prd-ops)"'
+alias assume-system='aws sts assume-role --role-arn arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-system-api --role-session-name api-gateway-test --region ap-northeast-1'
 
 function peco-src () {
     local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
@@ -142,8 +113,32 @@ function peco-git-delete-branch {
 zle -N peco-git-delete-branch
 bindkey '^dd' peco-git-delete-branch
 
-source $(rvm 2.6.3 do rvm env --path)
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-## REMOVED: deploy key export
-export GOPRIVATE=github.com/zeals-co-ltd
+export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+eval "$(direnv hook zsh)"
+eval "$(brew shellenv)"
+
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOME}/tmp/dtflib/include"
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOMEBREW_PREFIX}/include"
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOMEBREW_PREFIX}/opt/libarchive/include"
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOMEBREW_PREFIX}/opt/libmagic/include"
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOMEBREW_PREFIX}/opt/libiconv/include"
+export CGO_CFLAGS="${CGO_CFLAGS} -I${HOMEBREW_PREFIX}/opt/uchardet/include"
+
+export CGO_LDFLAGS="${CGO_LDFLAGS} -L${HOMEBREW_PREFIX}/lib"
+export CGO_LDFLAGS="${CGO_LDFLAGS} -L${HOMEBREW_PREFIX}/opt/libarchive/lib"
+export CGO_LDFLAGS="${CGO_LDFLAGS} -L${HOMEBREW_PREFIX}/opt/libmagic/lib"
+export CGO_LDFLAGS="${CGO_LDFLAGS} -L${HOMEBREW_PREFIX}/opt/libiconv/lib"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/vivian.hsieh/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/vivian.hsieh/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/vivian.hsieh/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/vivian.hsieh/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+

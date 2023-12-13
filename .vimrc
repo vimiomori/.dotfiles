@@ -1,12 +1,14 @@
 so ~/.vim/plugins.vim
 
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
 set nocompatible              " be iMproved, required
 
 "colors
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme palenight
 
 "syntax highlighting
 syntax enable

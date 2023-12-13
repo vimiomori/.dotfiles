@@ -15,10 +15,10 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="/anaconda3/bin:$PATH"
 
 # added by Anaconda3 5.1.0 installer
-export PATH="/Users/vi/anaconda3/bin:$PATH"
+export PATH="/Users/vivian.hsieh/anaconda3/bin:$PATH"
 
 # add powerline command
-export POWERLINE_CONFIG_COMMAND="/Users/vi/Library/Python/3.6/bin"
+export POWERLINE_CONFIG_COMMAND="/Users/vivian.hsieh/Library/Python/3.6/bin"
 export PATH="Users/vi/Library/Python/3.6/bin:$PATH"
 
 export PATH="/usr/local/bin:$PATH"
@@ -35,3 +35,4 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
