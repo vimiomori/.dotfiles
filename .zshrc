@@ -1,12 +1,14 @@
 export LC_ALL=en_US.UTF-8
 export ZSH=/Users/vivian.hsieh/.oh-my-zsh
-export GOPATH=$HOME/src
+export GOPATH=$HOME/code
 export GOBIN=$GOPATH/bin
-export PYTHONSTARTUP=/Users/vivian.hsieh/startup.py
+export JAVA_HOME=$HOME/OpenJDK/jdk-21.0.2.jdk/Contents/Home
+
 path=(
 	$path
-  $GOPATH/bin
-  /opt/homebrew/bin/go
+	$GOPATH/bin
+	$JAVA_HOME
+  ~/src/bin
 	/usr/local/go/bin
 	~/Library/Python/3.9/bin
 	/bin
@@ -63,11 +65,7 @@ alias rm-untagged="docker images --no-trunc | grep '<none>' | awk '{ print $3 }'
 alias clean="docker ps --filter status=dead --filter status=exited -aq \
           | xargs docker rm -v"
 alias tree='tree -I "*pycache*" --dirsfirst'
-alias stg='kubectl config use-context gke_fanp-stg_asia-northeast1_fanp'
-alias prd='kubectl config use-context gke_fanp-prd_asia-northeast1_fanp'
-alias dev='kubectl config use-context gke_zeals-sandbox_asia-northeast1_tokyo-region-v1'
-alias stg-db='cloud_sql_proxy -dir ~/cloudsql -instances=fanp-stg:asia-northeast1:fanp-stg'
-alias dev-db='kubectl port-forward -n database mysql-db-0 33306:3306'
+alias prd-db='~/scripts/prod_db.sh'
 alias gget="ghq get"
 alias test='cd ~/src/github.com/REDACTED_ORG/REDACTED_REPO_3/service/octopus-api && test-env-exec grc go test ./...'
 
@@ -82,11 +80,11 @@ alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /
 alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
 alias public-ip='ifconfig -u | grep 'inet ' | grep -v 127.0.0.1 | cut -d\  -f2 | head -1'
 alias docker-db='docker run -e POSTGRES_PASSWORD=password -d -p 54321:5432 postgres:latest'
-alias go='grc go'
-alias assume-dev='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_DEV:role/switch-role-dev)"'
-alias assume-stg='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-ops)"'
-alias assume-prd='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_PRD:role/saascore-prd-ops)"'
+alias assume-dev='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_DEV:role/switch-role-dev -user vivian.hsieh)"'
+alias assume-stg='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-ops -user vivian.hsieh)"'
+alias assume-prd='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::REDACTED_AWS_ACCOUNT_PRD:role/saascore-prd-ops -user vivian.hsieh)"'
 alias assume-system='aws sts assume-role --role-arn arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-system-api --role-session-name api-gateway-test --region ap-northeast-1'
+alias assume-system-prd='aws sts assume-role --role-arn arn:aws:iam::REDACTED_AWS_ACCOUNT_PRD:role/saascore-prd-system-api --role-session-name api-use --region ap-northeast-1'
 
 function peco-src () {
     local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
@@ -142,3 +140,5 @@ if [ -f '/Users/vivian.hsieh/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/vi
 if [ -f '/Users/vivian.hsieh/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/vivian.hsieh/google-cloud-sdk/completion.zsh.inc'; fi
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
+
+export AWS_DEFAULT_REGION=ap-northeast-1

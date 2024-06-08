@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =1
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/Users/vivian.hsieh/.config/github-copilot'
 let g:netrw_dirhist_1='/usr/local/etc/nginx'
 let g:netrw_dirhist_0='/Users/vivian.hsieh/src/github.com/puipuipartpicker/kbpartpicker/config/kbpartpicker.sql'
 let g:netrw_dirhist_9='/Users/vivian.hsieh/src/github.com/zeals-co-ltd/formless'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_6='/Users/vivian.hsieh/src/github.com/zeals-co-ltd/formless/
 let g:netrw_dirhist_5='/Users/vivian.hsieh/src/github.com/zeals-co-ltd/formless/src/automation'
 let g:netrw_dirhist_4='/Users/vivian.hsieh/src/github.com/zeals-co-ltd/formless/src'
 let g:netrw_dirhist_3='/Users/vivian.hsieh/src/github.com/zeals-co-ltd/formless'
-let g:netrw_dirhist_2='/Users/vivian.hsieh/src/github.com/puipuipartpicker/kbpartpicker/backend/.circleci'
