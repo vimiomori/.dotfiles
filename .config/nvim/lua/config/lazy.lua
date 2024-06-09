@@ -55,7 +55,7 @@ require("lazy").setup({
   -- cSpell:word tokyonight habamax
   install = { colorscheme = { "catppuccin", "tokyonight", "habamax" } },
   ui = {
-    border = "single",
+    border = "rounded",
   },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
