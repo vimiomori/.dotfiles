@@ -22,7 +22,7 @@
 	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 	update = !git pull && git submodule update
 [core]
-	excludesFile = ~/.gitignore
+	excludesfile = /Users/vivian.hsieh/.gitignore
 	editor = vim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
