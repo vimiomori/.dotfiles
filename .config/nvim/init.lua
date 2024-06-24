@@ -27,3 +27,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     -- end
   end,
 })
+
+vim.api.nvim_create_autocmd({'BufNewFile'}, {
+    pattern = { "*diary/[^index]*.wiki" },
+    command = "0r! ~/.vim/bin/vimwiki-diary-tpl.py '%'",
+})

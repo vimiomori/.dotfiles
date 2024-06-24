@@ -2,10 +2,10 @@
 TERM = "xterm-256color"
 
 [window]
-padding.x = 10
-padding.y = 10
+dynamic_padding = true
+# padding.y = 10
 
-decorations = "Buttonless"
+decorations = "None"
 
 blur = false
 
@@ -13,15 +13,16 @@ option_as_alt = "Both"
 
 [font]
 normal.family = "SauceCodePro Nerd Font"
+normal.style = "Regular"
 
-size = 13
+size = 14
 
 [colors]
 draw_bold_text_with_bright_colors = true
 
 [colors.primary]
 background = "#003955"
-foreground = "#6ee7ff"
+foreground = "#b4f9f8"
 dim_foreground = "#17E3FF"
 bright_foreground = "#30FFF2"
 
@@ -33,7 +34,7 @@ green = "#5DFFAE"
 yellow = "#F6FFAE"
 blue = "#39CDFF"
 magenta = "#ffcbe6"
-cyan = "#17E3FF"
+cyan = "#30FFF2"
 white = "#b4f9f8"
 
 [colors.bright]
