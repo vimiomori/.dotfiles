@@ -4,19 +4,17 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-template = """# {date}
+template = """= {date} =
  
-## Daily checklist
+== Daily checklist | recur:daily due:today ==
 
-* [ ] Text parents
-* [ ] Check email
-* [ ] Check saved items in slack
+== Overdue | project:Work +OVERDUE ==
+ 
+== Todo | project:Work due:today ==
+ 
+== Home tasks | project:Home ==
 
-## Todo
- 
-* [ ] 
- 
-## Notes"""
+== Notes == """
 
 # default
 #

@@ -2,6 +2,7 @@
 require("config.lazy")
 
 -- Run gofmt + goimport on save
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
@@ -28,7 +29,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
-vim.api.nvim_create_autocmd({'BufNewFile'}, {
-    pattern = { "*diary/[^index]*.wiki" },
-    command = "0r! ~/.vim/bin/vimwiki-diary-tpl.py '%'",
+vim.api.nvim_create_autocmd({ "BufNewFile" }, {
+  pattern = { "*diary/[^index]*.wiki" },
+  command = "0r! ~/.vim/bin/vimwiki-diary-tpl.py '%'",
 })

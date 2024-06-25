@@ -17,6 +17,13 @@ normal.style = "Regular"
 
 size = 14
 
+[colors.cursor]
+cursor = "#30FFF2"
+
+[colors.vi_mode_cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
 [colors]
 draw_bold_text_with_bright_colors = true
 
@@ -26,6 +33,15 @@ foreground = "#b4f9f8"
 dim_foreground = "#17E3FF"
 bright_foreground = "#30FFF2"
 
+[colors.dim]
+black = "#002a3e"
+red = "#FF7575"
+green = "#5DFFAE"
+yellow = "#F6FFAE"
+blue = "#39CDFF"
+magenta = "#ffcbe6"
+cyan = "#30FFF2"
+white = "#b4f9f8"
 
 [colors.normal]
 black = "#002a3e"
@@ -38,7 +54,7 @@ cyan = "#30FFF2"
 white = "#b4f9f8"
 
 [colors.bright]
-black = "#002a3e"
+black = "#006E87"
 red = "#FFCBBA"
 green = "#30ffc8"
 yellow = "#FEFFD5"
