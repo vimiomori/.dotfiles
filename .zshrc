@@ -234,6 +234,17 @@ function peco-git-delete-branch {
 zle -N peco-git-delete-branch
 bindkey '^dd' peco-git-delete-branch
 
+# Check to see if Homebrew is installed, and install it if it is not
+command -v brew >/dev/null 2>&1 || { echo >&2 "Homebrew is not installed. Installing Homebrew Now."; \
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; }
+#
+# Check to see if nvm is installed, and install it if it is not
+command -v nvm >/dev/null 2>&1 || { echo >&2 "nvm is not installed. Installing nvm Now."; \
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)"; \
+nvm install npm ;}
+
+
+
 export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
@@ -265,3 +276,4 @@ export CGO_LDFLAGS="${CGO_LDFLAGS} -L${HOMEBREW_PREFIX}/opt/libiconv/lib"
 #
 #
 export AWS_DEFAULT_REGION=ap-northeast-1
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
