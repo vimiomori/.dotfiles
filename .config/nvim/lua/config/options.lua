@@ -5,3 +5,4 @@
 vim.opt.backupdir = vim.env.HOME .. "/.vim/backup"
 vim.opt.directory = vim.env.HOME .. "/.vim/swap"
 vim.opt.undodir = vim.env.HOME .. "/.vim/undo"
+vim.g.python3_host_prog = "/Users/vivian.hsieh/path/to/venv/bin/python3"

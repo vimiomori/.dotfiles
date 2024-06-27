@@ -167,10 +167,16 @@ alias c='clear'
 
 alias python='python3'
 alias pip='pip3'
+alias gs='git status'
 alias ga='git add .'
 alias gc='git commit'
-alias commit='git add . && git commit'
+alias gac='git commit -a'
 alias gp='git push'
+alias ca='config add -u'
+alias cc='config commit -m'
+alias cac='config commit -am'
+alias cs='config status'
+alias commit='git add . && git commit'
 alias gignore='git update-index --assume-unchanged'
 alias update='git submodule update --remote'
 alias sshd='ssh -D 8080'
@@ -202,12 +208,15 @@ alias assume-prd='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam
 alias assume-system='aws sts assume-role --role-arn arn:aws:iam::REDACTED_AWS_ACCOUNT_STG:role/saascore-stg-system-api --role-session-name api-gateway-test --region ap-northeast-1'
 alias assume-system-prd='aws sts assume-role --role-arn arn:aws:iam::REDACTED_AWS_ACCOUNT_PRD:role/saascore-prd-system-api --role-session-name api-use --region ap-northeast-1'
 
-# function bastion-id() {
-#   echo aws ec2 describe-instances --filters 'Name=tag:Name,Values=saascore-*-bastion' --output text --query 'Reservations[*].Instances[*].InstanceId'
-# }
+INSTANCE_ID=
+function get-bastion-id() {
+  INSTANCE_ID=`aws ec2 describe-instances --filters 'Name=tag:Name,Values=saascore-*-bastion' --output text --query 'Reservations[*].Instances[*].InstanceId'`
+}
 
-# alias bastion='aws ssm start-session --target $(bastion-id)'
-# alias masked-db = 'aws ssm start-session --target $(bastion-id) --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["5432"],"localPortNumber":["55432"]}''
+alias bastion='get-bastion-id && aws ssm start-session --target "$INSTANCE_ID"'
+
+DB_PORTS='{"portNumber":["5432"],"localPortNumber":["55432"]}'
+alias masked-db='assume-prd && get-bastion-id && aws ssm start-session --target "$INSTANCE_ID" --document-name AWS-StartPortForwardingSession --parameters "$DB_PORTS"'
 
 function peco-src () {
     local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
