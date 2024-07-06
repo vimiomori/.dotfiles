@@ -3,6 +3,7 @@ require("config.lazy")
 
 -- Run gofmt + goimport on save
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+-- vim.g.python3_host_prog = "/Users/vivian.hsieh/venv/bin/python3"
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",

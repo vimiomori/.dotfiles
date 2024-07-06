@@ -34,6 +34,7 @@ path=(
 	~/.cargo/bin
 	~/.gem/ruby/2.0.0/bin
 	~/.pyenv/bin
+  ~/nvim/bin
 )
 if [ -d "/usr/local/lib" ]; then
 	path+=/usr/local/lib
@@ -176,6 +177,7 @@ alias ca='config add -u'
 alias cc='config commit -m'
 alias cac='config commit -am'
 alias cs='config status'
+alias ccp='config push'
 alias commit='git add . && git commit'
 alias gignore='git update-index --assume-unchanged'
 alias update='git submodule update --remote'
@@ -214,9 +216,20 @@ function get-bastion-id() {
 }
 
 alias bastion='get-bastion-id && aws ssm start-session --target "$INSTANCE_ID"'
+alias bastion-stg='assume-stg && bastion'
 
-DB_PORTS='{"portNumber":["5432"],"localPortNumber":["55432"]}'
-alias masked-db='assume-prd && get-bastion-id && aws ssm start-session --target "$INSTANCE_ID" --document-name AWS-StartPortForwardingSession --parameters "$DB_PORTS"'
+DB_PARAMS='{"host":["REDACTED_RDS_PRD_MASKED"],"portNumber":["5432"], "localPortNumber":["55432"]}'
+TEMPORAL_PARAMAS='{"portNumber":["8080"],"localPortNumber":["8080"]}'
+
+function port-forward() {
+  get-bastion-id
+  aws ssm start-session --target "$INSTANCE_ID" --document-name $1 --parameters $2
+}
+
+alias masked-db='assume-prd && port-forward AWS-StartPortForwardingSessionToRemoteHost "$DB_PARAMS"'
+alias temporal='assume-prd && port-forward AWS-StartPortForwardingSession "$TEMPORAL_PARAMAS"'
+
+alias db-secrets='aws secretsmanager get-secret-value --secret-id REDACTED_SECRETS_MANAGER_KEY --output text --query "SecretString"'
 
 function peco-src () {
     local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
@@ -247,17 +260,18 @@ bindkey '^dd' peco-git-delete-branch
 command -v brew >/dev/null 2>&1 || { echo >&2 "Homebrew is not installed. Installing Homebrew Now."; \
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; }
 #
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 # Check to see if nvm is installed, and install it if it is not
-command -v nvm >/dev/null 2>&1 || { echo >&2 "nvm is not installed. Installing nvm Now."; \
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)"; \
+type nvm >/dev/null 2>&1 || { echo >&2 "nvm is not installed. Installing nvm Now."; \
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)" && \
 nvm install npm ;}
 
 
 
 export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 eval "$(direnv hook zsh)"
 eval "$(brew shellenv)"

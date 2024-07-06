@@ -1,0 +1,94 @@
+#!/usr/bin/env zsh
+
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+yabai -m config layout bsp
+# New window spawns to the right if vertical split, or bottom if horizontal split
+yabai -m config window_placement second_child
+# yabai -m config top_padding 35
+# yabai -m config bottom_padding 3
+# yabai -m config left_padding 3
+# yabai -m config right_padding 3
+yabai -m config window_gap 3
+
+# modifier for clicking and dragging with mouse
+yabai -m config mouse_modifier alt
+# set modifier + left-click drag to move window
+yabai -m config mouse_action1 move
+# set modifier + right-click drag to resize window
+yabai -m config mouse_action2 resize
+
+
+# when window is dropped in center of another window, swap them (on edges it will split it)
+yabai -m mouse_drop_action swap
+
+
+yabai -m config insert_feedback_color 0xffd65d0e
+
+# Unmanaged apps
+app_titles="(Copy|Bin|About This Mac|Info|Finder Preferences|Preferences"
+app_titles+="|QuickTime Player)"
+yabai -m rule --add title="${app_titles}" manage=off
+
+yabai -m config external_bar all:35:0
+# yabai -m config menubar_opacity 0.0
+
+# Space Mapper after configs
+setup_space() {
+  local idx="$1"
+  local name="$2"
+  local space=
+  echo "setup space $idx : $name"
+
+  space=$(yabai -m query --spaces --space "$idx")
+  if [ -z "$space" ]; then
+    yabai -m space --create
+  fi
+
+  yabai -m space "$idx" --label "$name"
+  if [ "$idx" -lt "4" ]; then
+    yabai -m space "$idx" --display 1
+  else
+    yabai -m space "$idx" --display 2
+  fi
+}
+
+# Setup or destroy spaces as needed to match 9
+for _ in $(yabai -m query --spaces | jq '.[].index | select(. > 9)'); do
+  yabai -m space --destroy 10
+done
+
+# Set Up Spaces
+setup_space 1 general
+setup_space 2 web
+setup_space 3 communication
+setup_space 4 maincode
+setup_space 5 altweb
+setup_space 6 notes
+
+
+# add signals
+# listen to window open
+# if it is the first arc window, move to space web
+# if it is the second, move to space web2
+# if it is the third or above, don't manage
+yabai -m signal --add event=window_created app="^Arc$" action="~/.config/yabai/bin/assign_arc.sh"
+# yabai -m space 1 --label general
+# yabai -m space 2 --label web
+# yabai -m space 3 --label code
+# yabai -m space 4 --label communication
+# yabai -m space 5 --label notes
+
+yabai -m config --space general layout             stack
+
+# window rules
+yabai -m rule --add app="^Alacritty$" space=code
+yabai -m rule --add app="^Slack$" space=communication
+yabai -m rule --add app="^Arc$" space=web
+yabai -m rule --add app="^Notes$" space=notes
+yabai -m rule --add app="^(Calculator|Archive Utility)$" manage=off
+yabai -m rule --add app="^(System Settings|Finder)$" space=^general
+
+
+yabai -m rule --apply
