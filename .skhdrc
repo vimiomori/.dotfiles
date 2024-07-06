@@ -12,6 +12,7 @@ ctrl + alt - l : yabai -m space --focus next
 
 ctrl + alt - g : yabai -m space --focus general
 ctrl + alt - w : yabai -m space --focus web
+ctrl + alt - a : yabai -m space --focus altweb
 ctrl + alt - c : yabai -m space --focus communication
 ctrl + alt - m : yabai -m space --focus maincode
 
