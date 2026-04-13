@@ -1,0 +1,52 @@
+# ── AWS config ────────────────────────────────────────────────────────────────
+# Copy this file to ~/.zsh/aws.zsh and fill in your real values.
+#
+#   cp ~/.zsh/aws.zsh.example ~/.zsh/aws.zsh
+#
+# aws.zsh is gitignored and will not be committed.
+
+export AWS_DEFAULT_REGION=ap-northeast-1
+
+# ── Role assumption ───────────────────────────────────────────────────────────
+# Replace ACCOUNT_ID and ROLE placeholders with your real values.
+alias assume-dev='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::DEV_ACCOUNT_ID:role/YOUR_DEV_ROLE -user YOUR_USER)"'
+alias assume-stg='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::STG_ACCOUNT_ID:role/YOUR_STG_ROLE -user YOUR_USER)"'
+alias assume-prd='eval "$(shobo-aws-sts-cli -keyring -role-to-switch arn:aws:iam::PRD_ACCOUNT_ID:role/YOUR_PRD_ROLE -user YOUR_USER)"'
+
+# ── Bastion / SSM ─────────────────────────────────────────────────────────────
+_BASTION_INSTANCE_ID=""
+
+get-bastion-id() {
+  _BASTION_INSTANCE_ID=$(
+    aws ec2 describe-instances \
+      --filters 'Name=tag:Name,Values=YOUR_BASTION_TAG_PATTERN' \
+      --output text \
+      --query 'Reservations[*].Instances[*].InstanceId'
+  )
+}
+
+port-forward() {
+  get-bastion-id
+  aws ssm start-session \
+    --target "$_BASTION_INSTANCE_ID" \
+    --document-name "$1" \
+    --parameters "$2"
+}
+
+alias bastion='get-bastion-id && aws ssm start-session --target "$_BASTION_INSTANCE_ID"'
+alias bastion-stg='assume-stg && bastion'
+alias bastion-prd='assume-prd && bastion'
+
+# ── DB connection params ──────────────────────────────────────────────────────
+# Each variable holds JSON for aws ssm start-session --parameters.
+
+typeset -A _db_params
+_db_params=(
+  stg '{"host":["YOUR_STG_RDS_HOST"],"portNumber":["5432"],"localPortNumber":["55432"]}'
+  prd '{"host":["YOUR_PRD_RDS_HOST"],"portNumber":["5432"],"localPortNumber":["65432"]}'
+)
+
+_ssm_doc="AWS-StartPortForwardingSessionToRemoteHost"
+
+alias stg-db='assume-stg && port-forward "$_ssm_doc" "${_db_params[stg]}"'
+alias prd-db='assume-prd && port-forward "$_ssm_doc" "${_db_params[prd]}"'

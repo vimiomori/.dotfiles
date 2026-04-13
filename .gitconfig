@@ -10,7 +10,7 @@
 	process = git-lfs filter-process
 	required = true
 [ghq]
-	root = /Users/vivian.hsieh/code/src
+	root = ~/code/src
 [alias]
   lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 	st = status
@@ -22,7 +22,7 @@
 	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 	update = !git pull && git submodule update
 [core]
-	excludesfile = /Users/vivian.hsieh/.gitignore
+	excludesfile = ~/.gitignore
 	editor = vim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
@@ -31,7 +31,7 @@
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [commit]
-	template = /Users/vivian.hsieh/.stCommitMsg
+	template = ~/.stCommitMsg
 [rerere]
 	enabled = true
 [credential]

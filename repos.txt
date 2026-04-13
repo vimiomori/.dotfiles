@@ -1,7 +1,3 @@
-github.com/REDACTED_ORG/REDACTED_REPO_1
-github.com/REDACTED_ORG/REDACTED_REPO_2
-github.com/REDACTED_ORG/REDACTED_REPO_3
-github.com/REDACTED_ORG/REDACTED_REPO_4
 github.com/blacksmithgu/obsidian-dataview
 github.com/dnaeon/go-vcr
 github.com/localstack/localstack
