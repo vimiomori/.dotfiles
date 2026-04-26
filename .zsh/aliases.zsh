@@ -42,5 +42,5 @@ alias mouse-left='defaults -currentHost write .GlobalPreferences com.apple.mouse
 alias mouse-right='defaults -currentHost write .GlobalPreferences com.apple.mouse.swapLeftRightButton -bool false'
 
 # ── Project-specific ─────────────────────────────────────────────────────────
-alias octopus-test='cd $HOME/src/github.com/REDACTED_ORG/REDACTED_REPO_3/service/octopus-api && test-env-exec grc go test ./...'
 alias kill-rails='kill -9 $(cat tmp/pids/server.pid)'
+alias mux='pgrep -vx tmux > /dev/null && tmux new -d -s delete-me && tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && tmux kill-session -t delete-me && tmux attach || tmux attach'

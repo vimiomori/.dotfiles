@@ -4,18 +4,25 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-template = """= {date} =
+template = """====== {date}    ======
+====== [[/1 projects/2024LH-Goals/tasks.wiki|FY2024-LH Goals]] | project:2024LH-Goals start.any: ======
  
-== Daily checklist | recur:daily due:{today} ==
+=== Daily checklist  ===
+- [ ] text parents
+- [ ] check email
+- [ ] check saved items in slack
+- [ ] check App Workflows on prod
 
-== Overdue | project:Work due.before:{today} status.not:completed ==
- 
-== Todo | project:Work due:{today} status.not:completed ==
+== Doing | '(project:Work or project:2024LH-Goals)' start.any: ==
+
+== TODO | project:Work due:{today} ==
 * [ ]
 
+==== Overdue | project:Work due.before:{today} status.not:completed ====
+ 
 === Done | project:Work end.after:{today} and end.before:{tomorrow} status:completed ===
  
-== Home tasks | project:Home status.not:completed ==
+===== Home tasks | project:Home status.not:completed =====
 
 == Notes == """
 

@@ -6,7 +6,7 @@ WINDOWS=($((yabai -m query --windows | jq -r 'map(select(.app == "Arc")) | .[] .
 if [ "${#WINDOWS[@]}" -eq "1" ]; then
   yabai -m window $YABAI_WINDOW_ID move --space web
 elif [ "${#WINDOWS[@]}" -eq "2" ]; then
-  yabai -m window $YABAI_WINDOW_ID move --space altweb
+  yabai -m window $YABAI_WINDOW_ID move --space maincode
 else
   echo $YABAI_WINDOW_ID
 fi

@@ -16,7 +16,7 @@ _cgo_lib_dirs=(
   "${HOMEBREW_PREFIX}/opt/libiconv/lib"
 )
 
-export CGO_CFLAGS="${CGO_CFLAGS} ${(j: :)${_cgo_include_dirs/#/-I}}"
-export CGO_LDFLAGS="${CGO_LDFLAGS} ${(j: :)${_cgo_lib_dirs/#/-L}}"
+export CGO_CFLAGS="${(j: :)${_cgo_include_dirs[@]/#/-I}}"
+export CGO_LDFLAGS="${(j: :)${_cgo_lib_dirs[@]/#/-L}}"
 
 unset _cgo_include_dirs _cgo_lib_dirs

@@ -3,19 +3,24 @@ TERM = "xterm-256color"
 
 [window]
 dynamic_padding = true
+startup_mode = "SimpleFullscreen"
 # padding.y = 10
 
-decorations = "None"
+decorations = "Buttonless"
 
-blur = false
+blur = true
+opacity = 0.85
 
 option_as_alt = "Both"
+
+[scrolling]
+history = 100000
 
 [font]
 normal.family = "SauceCodePro Nerd Font"
 normal.style = "Regular"
 
-size = 14
+size = 12
 
 [colors.cursor]
 cursor = "#30FFF2"
@@ -34,8 +39,8 @@ dim_foreground = "#17E3FF"
 bright_foreground = "#30FFF2"
 
 [colors.dim]
-black = "#002a3e"
-red = "#FF7575"
+black = "#003955"
+red = "#FFB3B3"
 green = "#5DFFAE"
 yellow = "#F6FFAE"
 blue = "#39CDFF"
@@ -44,8 +49,8 @@ cyan = "#30FFF2"
 white = "#b4f9f8"
 
 [colors.normal]
-black = "#002a3e"
-red = "#FF7575"
+black = "#003955"
+red = "#FFB3B3"
 green = "#5DFFAE"
 yellow = "#F6FFAE"
 blue = "#39CDFF"
@@ -62,3 +67,15 @@ blue = "#6ee7ff"
 magenta = "#FFEBFE"
 cyan = "#30FFF2"
 white = "#b4f9f8"
+
+[[hints.enabled]]
+command = "open"
+hyperlinks = true
+regex = "(https?|ftp)://[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+mouse.enabled = true
+mouse.mods = "Command"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

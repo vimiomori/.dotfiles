@@ -1,6 +1,2 @@
-# Sensitive / machine-specific
-.zsh/aws.zsh
-.task/taskchampion.sqlite3
-
-# OS junk
-.DS_Store
+.env
+.claude

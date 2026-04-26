@@ -130,7 +130,8 @@ return {
   {
     "nvimdev/dashboard-nvim",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
-    opts = function(_, opts)
+    event = "VimEnter",
+    config = function()
       local logo = [[
 ▄▄▄▄▄▄▄ ▄▄▄▄    ▄▄▄▄▄▄▄ ▄▄▄     ▄▄   ▄▄ ▄▄▄▄▄▄▄    ▄▄▄▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄     ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ 
 █       █    █  █  ▄    █   █   █  █ █  █       █  █      ██       █   █   █       █  █ █  █   █  █  █ █       █
@@ -142,17 +143,25 @@ return {
 
       ]]
       logo = string.rep("\n", 8) .. logo .. "\n\n"
-      opts.config.header = vim.split(logo, "\n")
-      opts.config.shortcut = {
-        { action = "qa", desc = " Quit", icon = " ", key = "q" },
-        {
-          action = 'lua require("persistence").load()',
-          desc = " Restore Session",
-          icon = " ",
-          key = "s",
+      require("dashboard").setup({
+        -- config
+        config = {
+          header = vim.split(logo, "\n"),
+          shortcut = {
+            { action = "qa", desc = " Quit", icon = " ", key = "q" },
+            {
+              action = 'lua require("persistence").load()',
+              desc = " Restore Session",
+              icon = " ",
+              key = "s",
+            },
+          },
+          theme = "hyper",
+          hide = {
+            statusline = false,
+          },
         },
-      }
-      opts.theme = "hyper"
+      })
     end,
     keys = {
       { "<leader>h", "<cmd>Dashboard<cr>", desc = "Open dashboard" },
@@ -160,9 +169,13 @@ return {
   },
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { { 'vimiomori/pomodoro.nvim' } },
+    dependencies = { { "vimiomori/bluedolphin.nvim" } },
+    init = function()
+      vim.g.lualine_laststatus = vim.o.laststatus
+    end,
     opts = function(_, opts)
-      opts.options.component_separators = { left = "", right = "" }
+      opts.options = { theme = "bluedolphin" }
+      opts.options.component_separators = { left = "", right = "" }
       opts.options.section_separators = { left = "", right = "" }
       opts.sections.lualine_b = {
         "branch",
@@ -203,10 +216,10 @@ return {
         },
       }
       opts.sections.lualine_z = {
-        {
-          -- "filename",
-          require('pomodoro').statusline,
-        },
+        -- {
+        --   -- "filename",
+        --   require('pomodoro').statusline,
+        -- },
         {
           function()
             return " " .. os.date("%T")
@@ -219,28 +232,38 @@ return {
   {
     "akinsho/bufferline.nvim",
     opts = function(_, opts)
+      local bufferline = require("bufferline")
+      opts.options.style_preset = bufferline.style_preset.minimal
       opts.options.offsets = {
         {
           filetype = "neo-tree",
           text = "File Explorer",
-          -- highlight = "Directory",
+          highlight = "TabLineFill",
           text_align = "center",
           separator = true,
         },
       }
       opts.options.themable = true
-      -- opts.options.separator_style = "slant"
+      opts.options.separator_style = "slant"
+      -- opts.options.indicator = {
+      --   style = "underline",
+      -- }
+      opts.options.hover = {
+        enabled = true,
+        delay = 200,
+        reveal = { "close" },
+      }
     end,
   },
   {
     "stevearc/dressing.nvim",
-    -- event = "VeryLazy",
+    event = "VeryLazy",
     config = function()
       require("dressing").setup({
         input = {
           get_config = function(opts)
             opts.insert_only = false
-          end
+          end,
           -- insert_only = false,
           -- prefer_width = 200,
         },
@@ -277,5 +300,16 @@ return {
       { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
-  }
+  },
+  -- { "folke/snacks.nvim", opts = { dashboard = { example = "github" } } },
+  { "folke/snacks.nvim", opts = { dashboard = { enabled = false } } },
+
+  -- {
+  --   "norcalli/nvim-colorizer.lua",
+  --   lazy = true,
+  --   event = "LazyFile",
+  --   config = function()
+  --     require("colorizer").setup()
+  --   end,
+  -- },
 }

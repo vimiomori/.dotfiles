@@ -4,13 +4,14 @@
 	email = vivian.muchen@gmail.com
 [push]
 	default = simple
+	autoSetupRemote = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 [ghq]
-	root = ~/code/src
+	root = /Users/vivian.hsieh/code/src
 [alias]
   lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 	st = status
@@ -22,7 +23,7 @@
 	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 	update = !git pull && git submodule update
 [core]
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/vivian.hsieh/.gitignore
 	editor = vim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
@@ -30,8 +31,6 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-[commit]
-	template = ~/.stCommitMsg
 [rerere]
 	enabled = true
 [credential]

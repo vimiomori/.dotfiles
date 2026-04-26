@@ -1,15 +1,32 @@
 {
-    "Prompt": "[?]",
-    "Keymap": {
-        "C-k": "peco.SelectUp",
-        "C-j": "peco.SelectDown",
-        "C-x,C-c": "peco.Cancel"
-    },
-    "Style": {
-        "Basic": ["on_default", "default"],
-        "SavedSelection": ["bold", "on_yellow", "white"],
-        "Selected": ["underline", "on_cyan", "black"],
-        "Query": ["green", "bold"],
-        "Matched": ["black", "on_magenta"]
-    }
+  "Prompt": "[?]",
+  "Keymap": {
+    "K": "peco.SelectUp",
+    "J": "peco.SelectDown",
+    "C-x,C-c": "peco.Cancel"
+  },
+  "Style": {
+    "Basic": [
+      "on_default",
+      "default"
+    ],
+    "SavedSelection": [
+      "bold",
+      "on_yellow",
+      "white"
+    ],
+    "Selected": [
+      "underline",
+      "on_cyan",
+      "black"
+    ],
+    "Query": [
+      "green",
+      "bold"
+    ],
+    "Matched": [
+      "black",
+      "on_magenta"
+    ]
+  }
 }

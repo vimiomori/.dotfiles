@@ -6,10 +6,10 @@ sudo yabai --load-sa
 yabai -m config layout bsp
 # New window spawns to the right if vertical split, or bottom if horizontal split
 yabai -m config window_placement second_child
-# yabai -m config top_padding 35
-# yabai -m config bottom_padding 3
-# yabai -m config left_padding 3
-# yabai -m config right_padding 3
+yabai -m config top_padding 7
+yabai -m config bottom_padding 7
+yabai -m config left_padding 60
+yabai -m config right_padding 7
 yabai -m config window_gap 3
 
 # modifier for clicking and dragging with mouse
@@ -24,14 +24,18 @@ yabai -m config mouse_action2 resize
 yabai -m mouse_drop_action swap
 
 
+# yabai -m config window_border on
 yabai -m config insert_feedback_color 0xffd65d0e
+yabai -m config active_window_border_color   0xff775759
+yabai -m config normal_window_border_color   0xff505050
+yabai -m config insert_window_border_color   0xffd75f5f
 
 # Unmanaged apps
 app_titles="(Copy|Bin|About This Mac|Info|Finder Preferences|Preferences"
 app_titles+="|QuickTime Player)"
 yabai -m rule --add title="${app_titles}" manage=off
 
-yabai -m config external_bar all:33:0
+# yabai -m config external_bar all:35:0
 # yabai -m config menubar_opacity 0.0
 
 # Space Mapper after configs
@@ -47,7 +51,7 @@ setup_space() {
   fi
 
   yabai -m space "$idx" --label "$name"
-  if [ "$idx" -lt "4" ]; then
+  if [ "$idx" -eq "0" ]; then
     yabai -m space "$idx" --display 1
   else
     yabai -m space "$idx" --display 2
@@ -62,10 +66,12 @@ done
 # Set Up Spaces
 setup_space 1 general
 setup_space 2 web
-setup_space 3 communication
-setup_space 4 maincode
-setup_space 5 altweb
-setup_space 6 notes
+setup_space 3 code 
+setup_space 4 slack
+setup_space 5 zoom
+setup_space 6 database
+setup_space 7 postman
+setup_space 8 hold
 
 
 # add signals
@@ -76,22 +82,25 @@ setup_space 6 notes
 yabai -m signal --add event=window_created app="^Arc$" action="~/.config/yabai/bin/assign_arc.sh"
 yabai -m signal --add event=window_created action="sketchybar --trigger windows_on_spaces"
 yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
-# yabai -m space 1 --label general
-# yabai -m space 2 --label web
-# yabai -m space 3 --label code
-# yabai -m space 4 --label communication
-# yabai -m space 5 --label notes
+yabai -m signal --add event=application_front_switched action="~/.config/yabai/bin/active_window.sh"
 
-yabai -m config --space general layout             stack
+# yabai -m config --space general layout             bsp
+# yabai -m config --space clients layout             float
 
 # window rules
-yabai -m rule --add app="^Alacritty$" space=maincode
-yabai -m rule --add app="^Slack$" space=communication
-yabai -m rule --add app="^Zoom Workplace$" space=communication
+yabai -m rule --add app="^Alacritty$" space=code
+yabai -m rule --add app="^Slack$" space=slack
+yabai -m rule --add app="^Zoom Workplace$" space=zoom
+yabai -m rule --add app="^zoom" space=zoom
 # yabai -m rule --add app="^Arc$" space=web
 yabai -m rule --add app="^Notes$" space=notes
+yabai -m rule --add app="^TablePlus$" space=database
+yabai -m rule --add app="^Postman$" space=postman
 yabai -m rule --add app="^(Calculator|Archive Utility)$" manage=off
-yabai -m rule --add app="^(System Settings|Finder)$" space=^general
+yabai -m rule --add app="^(System Settings|Finder|Preview)$" space=^general
 
 
 yabai -m rule --apply
+
+borders active_color=0xff17E3FF hidpi=on width=3.0 &
+

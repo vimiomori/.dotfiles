@@ -1,4 +1,5 @@
 vim.keymap.set("i", "jk", "<ESC>", { silent = true })
+
 -- tabs
 vim.keymap.set("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
@@ -8,4 +9,8 @@ vim.keymap.set("n", "<leader><tab>j", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 vim.keymap.set("n", "<leader><tab><tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 vim.keymap.set("n", "<leader><tab><bs>", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 vim.keymap.set("n", "<leader><tab>k", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
--- vim.keymap.set("n", "<leader>ww", "<Plug>VimwikiIndex", { desc = "<Plug>VimwikiIndex" })
+
+-- Copy full file path to clipboard
+vim.keymap.set("n", "<leader>fy", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+end, { desc = "Copy full path to clipboard" })
