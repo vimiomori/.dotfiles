@@ -11,8 +11,8 @@ alias ....='cd ../../..'
 
 # ── eza (ls replacement) ─────────────────────────────────────────────────────
 if command -v eza &>/dev/null; then
-  alias ls='eza --icons --group-directories-first'
-  alias ll='eza --icons --group-directories-first -la'
+  alias ls='eza -lh --group-directories-first --icons=auto'
+  alias ll='eza -lah --group-directories-first --icons=auto'
   alias lt='eza --icons --group-directories-first --tree --level=2'
   alias lta='eza --icons --group-directories-first --tree --level=2 -a'
 else
