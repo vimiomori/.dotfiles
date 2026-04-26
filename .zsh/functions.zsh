@@ -16,6 +16,7 @@ ga() {
 }
 
 # Remove worktree and branch from within active worktree directory.
+unalias gd 2>/dev/null
 gd() {
   local cwd worktree root branch
 
