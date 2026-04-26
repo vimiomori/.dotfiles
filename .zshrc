@@ -10,9 +10,11 @@ export LC_ALL=en_US.UTF-8
 [[ -f ~/.dir_colors ]] && eval "$(dircolors ~/.dir_colors)"
 
 # ── Source modular config files ───────────────────────────────────────────────
-for f in path plugins aliases aws functions cgo; do
-  source "$HOME/.zsh/${f}.zsh"
+for f in path plugins aliases functions cgo; do
+  [[ -f "$HOME/.zsh/${f}.zsh" ]] && source "$HOME/.zsh/${f}.zsh"
 done
+# aws.zsh is optional (gitignored, contains credentials)
+[[ -f "$HOME/.zsh/aws.zsh" ]] && source "$HOME/.zsh/aws.zsh"
 
 # ── Powerlevel10k theme ───────────────────────────────────────────────────────
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
@@ -38,40 +40,41 @@ setopt appendhistory sharehistory \
        hist_ignore_space hist_ignore_all_dups \
        hist_save_no_dups hist_ignore_dups hist_find_no_dups
 
-# ── Tool integrations ────────────────────────────────────────────────────────
-# Homebrew (install if missing)
-command -v brew >/dev/null 2>&1 || {
-  echo >&2 "Homebrew not found. Installing..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-}
-eval "$(brew shellenv)"
+# ── Homebrew ──────────────────────────────────────────────────────────────────
+if command -v brew &>/dev/null; then
+  eval "$(brew shellenv)"
+  export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
+fi
 
-# OpenSSL via Homebrew
-export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
+# ── direnv ────────────────────────────────────────────────────────────────────
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
 
-# direnv
-eval "$(direnv hook zsh)"
-
-# nvm
+# ── nvm ───────────────────────────────────────────────────────────────────────
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   source "$NVM_DIR/nvm.sh"
   [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
-else
-  echo >&2 "nvm not found. Installing..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)" \
-    && source "$NVM_DIR/nvm.sh" \
-    && nvm install node
 fi
 
-# fnm
+# ── fnm ───────────────────────────────────────────────────────────────────────
+_fnm_dir=""
 if [[ -d "$HOME/Library/Application Support/fnm" ]]; then
-  export PATH="$HOME/Library/Application Support/fnm:$PATH"
+  _fnm_dir="$HOME/Library/Application Support/fnm"
+elif [[ -d "$HOME/.local/share/fnm" ]]; then
+  _fnm_dir="$HOME/.local/share/fnm"
+fi
+if [[ -n "$_fnm_dir" ]]; then
+  export PATH="$_fnm_dir:$PATH"
   eval "$(fnm env)"
 fi
+unset _fnm_dir
 
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
+# ── pnpm ──────────────────────────────────────────────────────────────────────
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
