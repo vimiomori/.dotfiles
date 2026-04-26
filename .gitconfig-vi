@@ -1,0 +1,6 @@
+[user]
+	name = vimiomori
+	email = vivian.muchen@gmail.com
+[url "github-vi:"]
+	insteadOf = git@github.com:
+	insteadOf = https://github.com/

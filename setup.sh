@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES_REPO="https://github.com/vimiomori/.dotfiles.git"
-DOTFILES_SSH="git@github.com:vimiomori/.dotfiles.git"
+DOTFILES_SSH="github-vi:vimiomori/.dotfiles.git"
 CFG_DIR="$HOME/.cfg"
 OS="$(uname -s)"
 
@@ -42,7 +42,7 @@ else
 fi
 echo "  6. Create ~/.zsh/aws.zsh from template"
 echo "  7. Link platform-specific terminal config"
-echo "  8. Set up SSH key for GitHub"
+echo "  8. Set up SSH keys for vi and scott (pauses for GitHub)"
 echo "  9. Clone repos via ghq"
 echo ""
 echo "Beginning setup..."
@@ -144,23 +144,46 @@ if [[ -d "$_alacritty_dir" ]]; then
 fi
 unset _alacritty_dir
 
-# ── SSH key ──────────────────────────────────────────────────────────────────
-if [[ ! -f "$HOME/.ssh/id_ed25519" ]]; then
-  echo "==> Generating SSH key"
-  mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
-  ssh-keygen -t ed25519 -C "vivian.muchen@gmail.com" -f "$HOME/.ssh/id_ed25519" -N ""
+# ── SSH keys ─────────────────────────────────────────────────────────────────
+mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+
+setup_ssh_key() {
+  local name="$1" email="$2" github_user="$3"
+  local keyfile="$HOME/.ssh/id_ed25519_${name}"
+
+  if [[ -f "$keyfile" ]]; then
+    echo "==> SSH key for $name already exists, skipping"
+    return
+  fi
+
+  echo "==> Generating SSH key for $name ($email)"
+  ssh-keygen -t ed25519 -C "$email" -f "$keyfile" -N ""
+
+  if ! grep -q "Host github-${name}" "$HOME/.ssh/config" 2>/dev/null; then
+    cat >> "$HOME/.ssh/config" <<EOF
+
+Host github-${name}
+  HostName github.com
+  User git
+  IdentityFile ${keyfile}
+  IdentitiesOnly yes
+EOF
+    chmod 600 "$HOME/.ssh/config"
+  fi
+
   eval "$(ssh-agent -s)"
-  ssh-add "$HOME/.ssh/id_ed25519"
+  ssh-add "$keyfile"
   echo ""
-  echo "    Add this key to GitHub (Settings > SSH keys):"
+  echo "    Add this key to ${github_user}'s GitHub (Settings > SSH keys):"
   echo ""
-  cat "$HOME/.ssh/id_ed25519.pub"
+  cat "${keyfile}.pub"
   echo ""
   read -rp "    Press Enter after adding the key to GitHub..."
   echo ""
-else
-  echo "==> SSH key already exists, skipping"
-fi
+}
+
+setup_ssh_key "vi"    "vivian.muchen@gmail.com" "vimiomori"
+setup_ssh_key "scott" "scott.coffrin@gmail.com"  "scootyboots"
 
 # ── Repos ────────────────────────────────────────────────────────────────────
 echo "==> Cloning repos"

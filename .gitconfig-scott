@@ -1,0 +1,6 @@
+[user]
+	name = scootyboots
+	email = scott.coffrin@gmail.com
+[url "github-scott:"]
+	insteadOf = git@github.com:
+	insteadOf = https://github.com/

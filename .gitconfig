@@ -1,7 +1,5 @@
 # This is Git's per-user configuration file.
-[user]
-	name = vimiomori
-	email = vivian.muchen@gmail.com
+# Per-user identity is set via includeIf (see bottom of file).
 [push]
 	default = simple
 	autoSetupRemote = true
@@ -33,7 +31,13 @@
 	enabled = true
 [credential]
 	helper = cache
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+# Per-user identity and SSH routing by directory.
+# Repos under ~/code/src/github.com/vimiomori/ use vi's key.
+# Repos under ~/code/src/github.com/scootyboots/ use scott's key.
+# Everything else falls back to vi.
+[includeIf "gitdir:~/code/src/github.com/vimiomori/"]
+	path = ~/.gitconfig-vi
+[includeIf "gitdir:~/code/src/github.com/scootyboots/"]
+	path = ~/.gitconfig-scott
+[include]
+	path = ~/.gitconfig-vi
