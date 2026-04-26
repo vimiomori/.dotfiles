@@ -20,6 +20,34 @@ elif [[ -f /etc/os-release ]]; then
   esac
 fi
 
+# ── Plan ─────────────────────────────────────────────────────────────────────
+echo ""
+echo "vimiomori dotfiles setup"
+echo "========================"
+echo "Detected: $DISTRO ($OS)"
+echo ""
+echo "This script will:"
+if [[ "$DISTRO" == "macos" ]]; then
+  echo "  1. Install Xcode command line tools"
+  echo "  2. Install Homebrew (if not present)"
+elif [[ "$DISTRO" == "arch" ]]; then
+  echo "  1. Sync pacman and install yay (AUR helper)"
+fi
+echo "  3. Clone dotfiles bare repo to ~/.cfg"
+echo "  4. Check out dotfiles (backs up conflicts to ~/.dotfiles-backup)"
+if [[ "$DISTRO" == "arch" ]]; then
+  echo "  5. Install packages from pacman-pkgs.txt and aur-pkgs.txt"
+else
+  echo "  5. Install packages from Brewfile"
+fi
+echo "  6. Create ~/.zsh/aws.zsh from template"
+echo "  7. Link platform-specific terminal config"
+echo "  8. Set up SSH key for GitHub"
+echo "  9. Clone repos via ghq"
+echo ""
+echo "Beginning setup..."
+echo ""
+
 # ── Xcode (macOS only) ───────────────────────────────────────────────────────
 if [[ "$DISTRO" == "macos" ]]; then
   echo "==> Installing Xcode command line tools"
@@ -116,10 +144,28 @@ if [[ -d "$_alacritty_dir" ]]; then
 fi
 unset _alacritty_dir
 
-# ── Repos (optional, needs SSH key) ──────────────────────────────────────────
+# ── SSH key ──────────────────────────────────────────────────────────────────
+if [[ ! -f "$HOME/.ssh/id_ed25519" ]]; then
+  echo "==> Generating SSH key"
+  mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+  ssh-keygen -t ed25519 -C "vivian.muchen@gmail.com" -f "$HOME/.ssh/id_ed25519" -N ""
+  eval "$(ssh-agent -s)"
+  ssh-add "$HOME/.ssh/id_ed25519"
+  echo ""
+  echo "    Add this key to GitHub (Settings > SSH keys):"
+  echo ""
+  cat "$HOME/.ssh/id_ed25519.pub"
+  echo ""
+  read -rp "    Press Enter after adding the key to GitHub..."
+  echo ""
+else
+  echo "==> SSH key already exists, skipping"
+fi
+
+# ── Repos ────────────────────────────────────────────────────────────────────
 echo "==> Cloning repos"
 if command -v ghq &>/dev/null && [ -f "$HOME/repos.txt" ]; then
-  bash "$HOME/clone-repos.sh" || echo "    Repo cloning failed (SSH key missing?). Run clone-repos.sh later."
+  bash "$HOME/clone-repos.sh"
 fi
 
 echo "==> Done! Open a new terminal to load your config."
