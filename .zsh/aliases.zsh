@@ -12,7 +12,7 @@ alias gac='git commit -a'
 alias gp='git push'
 alias commit='git add . && git commit'
 alias gignore='git update-index --assume-unchanged'
-alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
+alias pb='git fetch --prune && git branch -r | awk "{print \$1}" | grep -Ev -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
 
 # ── Dotfile management (bare-repo) ───────────────────────────────────────────
 alias config='command git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -33,7 +33,11 @@ alias check-port='lsof -i -P -n | grep LISTEN'
 alias git-submodule-update='git submodule update --remote'
 alias gget='ghq get'
 alias sshd='ssh -D 8080'
-alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias start-db='pg_ctl -D /usr/local/pgsql/data -l logfile start'
+else
+  alias start-db='pg_ctl -D /var/lib/postgres/data -l logfile start'
+fi
 
 # ── Network ───────────────────────────────────────────────────────────────────
 if [[ "$OSTYPE" == darwin* ]]; then

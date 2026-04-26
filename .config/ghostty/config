@@ -1,0 +1,18 @@
+# Ghostty configuration
+# Docs: https://ghostty.org/docs/config/reference
+
+# Use zsh (Omarchy defaults to bash as login shell)
+command = /usr/bin/zsh
+
+font-family = SauceCodePro Nerd Font
+font-size = 12
+
+# Theme -- match alacritty colors
+background = #003955
+foreground = #b4f9f8
+cursor-color = #30FFF2
+
+# Window
+window-padding-x = 4
+window-padding-y = 4
+background-opacity = 0.85

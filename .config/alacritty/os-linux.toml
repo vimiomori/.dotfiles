@@ -1,0 +1,14 @@
+# Linux-specific Alacritty overrides
+
+[terminal.shell]
+program = "/usr/bin/zsh"
+
+[window]
+startup_mode = "Maximized"
+
+[[hints.enabled]]
+command = { program = "xdg-open" }
+hyperlinks = true
+regex = "(https?|ftp)://[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+mouse.enabled = true
+mouse.mods = "Control"

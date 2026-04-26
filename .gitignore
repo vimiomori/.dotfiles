@@ -1,2 +1,6 @@
+.zsh/aws.zsh
+.task/taskchampion.sqlite3
+.cache/
+.DS_Store
 .env
 .claude

@@ -1,17 +1,17 @@
+# ── Platform overrides ───────────────────────────────────────────────────────
+# Symlink os.toml -> os-macos.toml or os-linux.toml (setup.sh handles this).
+# Alacritty silently skips missing imports.
+import = [
+  "~/.config/alacritty/os.toml",
+]
+
 [env]
 TERM = "xterm-256color"
 
 [window]
 dynamic_padding = true
-startup_mode = "SimpleFullscreen"
-# padding.y = 10
-
-decorations = "Buttonless"
-
 blur = true
 opacity = 0.85
-
-option_as_alt = "Both"
 
 [scrolling]
 history = 100000
@@ -67,13 +67,6 @@ blue = "#6ee7ff"
 magenta = "#FFEBFE"
 cyan = "#30FFF2"
 white = "#b4f9f8"
-
-[[hints.enabled]]
-command = "open"
-hyperlinks = true
-regex = "(https?|ftp)://[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
-mouse.enabled = true
-mouse.mods = "Command"
 
 [[keyboard.bindings]]
 key = "Return"
