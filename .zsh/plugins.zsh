@@ -45,3 +45,18 @@ zinit cdreplay -q
 
 # Completion styling
 zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# Menu-complete cycling (tab / shift-tab)
+zmodload zsh/complist
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+# fzf shell integration (history search, file finder, cd)
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --zsh 2>/dev/null)" || {
+    # Fallback for older fzf without --zsh
+    [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
+    [[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
+  }
+fi

@@ -20,11 +20,13 @@ openssh
 curl
 wget
 unzip
-ttf-sourcecodepro-nerd
+ttf-jetbrains-mono-nerd
 github-cli
 lazygit
 grc
 zoxide
+eza
+bat
 pandoc
 task
 mercurial

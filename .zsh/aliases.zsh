@@ -1,12 +1,33 @@
 # ── General ───────────────────────────────────────────────────────────────────
-alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
 alias python='python3'
 alias pip='pip3'
 
+# ── Directories ──────────────────────────────────────────────────────────────
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# ── eza (ls replacement) ─────────────────────────────────────────────────────
+if command -v eza &>/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza --icons --group-directories-first -la'
+  alias lt='eza --icons --group-directories-first --tree --level=2'
+  alias lta='eza --icons --group-directories-first --tree --level=2 -a'
+else
+  alias ls='ls --color'
+  alias ll='ls -la'
+fi
+
+# ── bat (cat replacement) ────────────────────────────────────────────────────
+command -v bat &>/dev/null && alias cat='bat --paging=never'
+
+# ── fzf ──────────────────────────────────────────────────────────────────────
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+alias eff='${EDITOR:-nvim} "$(ff)"'
+
 # ── Git ───────────────────────────────────────────────────────────────────────
-alias ga='git add .'
 alias gc='git commit'
 alias gac='git commit -a'
 alias gp='git push'
@@ -28,7 +49,11 @@ alias clean="docker ps --filter status=dead --filter status=exited -aq | xargs d
 alias docker-db='docker run -e POSTGRES_PASSWORD=password -d -p 54321:5432 postgres:latest'
 
 # ── Utilities ─────────────────────────────────────────────────────────────────
-alias tree='tree -I "*pycache*" --dirsfirst'
+if command -v eza &>/dev/null; then
+  alias tree='eza --icons --tree --group-directories-first -I "*pycache*"'
+else
+  alias tree='tree -I "*pycache*" --dirsfirst'
+fi
 alias check-port='lsof -i -P -n | grep LISTEN'
 alias git-submodule-update='git submodule update --remote'
 alias gget='ghq get'

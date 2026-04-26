@@ -43,7 +43,6 @@ fi
 echo "  6. Create ~/.zsh/aws.zsh from template"
 echo "  7. Link platform-specific terminal config"
 echo "  8. Set up SSH keys for vi and scott (pauses for GitHub)"
-echo "  9. Clone repos via ghq"
 echo ""
 echo "Beginning setup..."
 echo ""
@@ -184,12 +183,6 @@ EOF
 
 setup_ssh_key "vi"    "vivian.muchen@gmail.com" "vimiomori"
 setup_ssh_key "scott" "scott.coffrin@gmail.com"  "scootyboots"
-
-# ── Repos ────────────────────────────────────────────────────────────────────
-echo "==> Cloning repos"
-if command -v ghq &>/dev/null && [ -f "$HOME/repos.txt" ]; then
-  bash "$HOME/clone-repos.sh"
-fi
 
 echo "==> Done! Open a new terminal to load your config."
 echo "    Remember to edit ~/.zsh/aws.zsh with your real values."

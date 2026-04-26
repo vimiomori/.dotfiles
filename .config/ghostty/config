@@ -4,8 +4,8 @@
 # Use zsh (Omarchy defaults to bash as login shell)
 command = /usr/bin/zsh
 
-font-family = SauceCodePro Nerd Font
-font-size = 12
+font-family = JetBrainsMono Nerd Font
+font-size = 9
 
 # Theme -- match alacritty colors
 background = #003955
@@ -13,6 +13,5 @@ foreground = #b4f9f8
 cursor-color = #30FFF2
 
 # Window
-window-padding-x = 4
-window-padding-y = 4
-background-opacity = 0.85
+window-padding-x = 14
+window-padding-y = 14

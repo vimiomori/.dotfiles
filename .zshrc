@@ -5,6 +5,7 @@ fi
 
 # ── Locale ────────────────────────────────────────────────────────────────────
 export LC_ALL=en_US.UTF-8
+export BAT_THEME=ansi
 
 # ── Dircolors ─────────────────────────────────────────────────────────────────
 if [[ -f ~/.dir_colors ]] && command -v dircolors &>/dev/null; then
@@ -40,7 +41,7 @@ bindkey "^[[A" history-beginning-search-backward-end
 bindkey "^[[B" history-beginning-search-forward-end
 
 # ── History ───────────────────────────────────────────────────────────────────
-HISTSIZE=5000
+HISTSIZE=32768
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
@@ -81,3 +82,6 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
+# ── zoxide (smart cd) ───────────────────────────────────────────────────────
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
