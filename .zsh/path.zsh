@@ -9,8 +9,9 @@ if [[ "$OSTYPE" == darwin* ]] && [[ -d "$HOME/OpenJDK" ]]; then
   export JAVA_HOME=$(find "$HOME/OpenJDK" -maxdepth 1 -name 'jdk-*.jdk' | sort -V | tail -1)/Contents/Home
 elif [[ -d "/usr/lib/jvm" ]]; then
   # Linux: pick the latest JDK in /usr/lib/jvm
-  local _jvm=$(find /usr/lib/jvm -maxdepth 1 -name 'java-*' | sort -V | tail -1)
+  _jvm=$(find /usr/lib/jvm -maxdepth 1 -name 'java-*' | sort -V | tail -1)
   [[ -n "$_jvm" ]] && export JAVA_HOME="$_jvm"
+  unset _jvm
 fi
 
 typeset -U path  # deduplicate PATH entries automatically

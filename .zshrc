@@ -7,7 +7,15 @@ fi
 export LC_ALL=en_US.UTF-8
 
 # ── Dircolors ─────────────────────────────────────────────────────────────────
-[[ -f ~/.dir_colors ]] && eval "$(dircolors ~/.dir_colors)"
+if [[ -f ~/.dir_colors ]] && command -v dircolors &>/dev/null; then
+  eval "$(dircolors ~/.dir_colors)"
+fi
+
+# ── Homebrew (must run before modules that depend on HOMEBREW_PREFIX) ─────────
+if command -v brew &>/dev/null; then
+  eval "$(brew shellenv)"
+  export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
+fi
 
 # ── Source modular config files ───────────────────────────────────────────────
 for f in path plugins aliases functions cgo; do
@@ -39,12 +47,6 @@ HISTDUP=erase
 setopt appendhistory sharehistory \
        hist_ignore_space hist_ignore_all_dups \
        hist_save_no_dups hist_ignore_dups hist_find_no_dups
-
-# ── Homebrew ──────────────────────────────────────────────────────────────────
-if command -v brew &>/dev/null; then
-  eval "$(brew shellenv)"
-  export PATH="${HOMEBREW_PREFIX}/opt/openssl/bin:$PATH"
-fi
 
 # ── direnv ────────────────────────────────────────────────────────────────────
 command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
