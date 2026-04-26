@@ -1,5 +1,6 @@
 # ── Git worktrees (from omarchy) ─────────────────────────────────────────────
 # Create a new worktree and branch from within current git directory.
+unalias ga 2>/dev/null
 ga() {
   if [[ -z "$1" ]]; then
     echo "Usage: ga <branch-name>"
