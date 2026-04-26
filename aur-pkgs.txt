@@ -1,2 +1,4 @@
 ghq
 peco
+temporal-cli
+railwayapp-cli
