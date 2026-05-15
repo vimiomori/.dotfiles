@@ -1,3 +1,12 @@
+# ── fzf ───────────────────────────────────────────────────────────────────────
+export FZF_DEFAULT_OPTS="
+  --color=bg:-1,bg+:-1,fg:-1,fg+:#FEFFD5
+  --color=hl:#17E3FF,hl+:#30FFF2
+  --color=border:8,prompt:#FFEBFE,pointer:#30FFF2
+  --color=marker:#FFCBBA,info:#FDFFC4,spinner:#63FFDB
+  --height=40% --reverse
+"
+
 # ── General ───────────────────────────────────────────────────────────────────
 alias vim='nvim'
 alias c='clear'
@@ -77,6 +86,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias mouse-left='defaults -currentHost write .GlobalPreferences com.apple.mouse.swapLeftRightButton -bool true'
   alias mouse-right='defaults -currentHost write .GlobalPreferences com.apple.mouse.swapLeftRightButton -bool false'
 fi
+
+# ── MCP ───────────────────────────────────────────────────────────────────────
+alias gcal-auth='npx @cocal/google-calendar-mcp auth'
 
 # ── Project-specific ─────────────────────────────────────────────────────────
 alias kill-rails='kill -9 $(cat tmp/pids/server.pid)'

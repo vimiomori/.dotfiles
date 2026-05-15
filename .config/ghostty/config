@@ -1,17 +1,68 @@
 # Ghostty configuration
 # Docs: https://ghostty.org/docs/config/reference
+# Ported from ~/.config/alacritty/alacritty.toml
 
-# Use zsh (Omarchy defaults to bash as login shell)
-command = /usr/bin/zsh
+# ── Environment ──────────────────────────────────────────────────────────────
+term = xterm-256color
 
-font-family = JetBrainsMono Nerd Font
-font-size = 9
+# ── macOS settings (inlined from os-macos for reliability) ───────────────────
+# alacritty: startup_mode = "SimpleFullscreen"
+fullscreen = true
+macos-non-native-fullscreen = true
+# Don't restore prior window state — it overrides `fullscreen = true` on launch
+window-save-state = never
+# alacritty: decorations = "Buttonless"
+macos-titlebar-style = hidden
+# alacritty: option_as_alt = "Both"
+macos-option-as-alt = true
 
-# Theme -- match alacritty colors
-background = #003955
-foreground = #b4f9f8
-cursor-color = #30FFF2
-
-# Window
+# ── Window ───────────────────────────────────────────────────────────────────
 window-padding-x = 14
 window-padding-y = 14
+# alacritty: dynamic_padding = true → balance padding around content
+window-padding-balance = true
+# alacritty: decorations = "None"
+window-decoration = false
+
+# ── Scrolling ────────────────────────────────────────────────────────────────
+scrollback-limit = 100000
+
+# ── Font ─────────────────────────────────────────────────────────────────────
+font-family = JetBrainsMono Nerd Font
+font-style = Regular
+font-size = 12
+
+# alacritty: draw_bold_text_with_bright_colors = true
+bold-is-bright = true
+
+# ── Colors ───────────────────────────────────────────────────────────────────
+# Primary
+background = #003955
+foreground = #b4f9f8
+
+# Cursor
+cursor-color = #30FFF2
+
+# Normal palette (0–7): black, red, green, yellow, blue, magenta, cyan, white
+palette = 0=#003955
+palette = 1=#FFB3B3
+palette = 2=#5DFFAE
+palette = 3=#F6FFAE
+palette = 4=#39CDFF
+palette = 5=#ffcbe6
+palette = 6=#30FFF2
+palette = 7=#b4f9f8
+
+# Bright palette (8–15)
+palette = 8=#006E87
+palette = 9=#FFCBBA
+palette = 10=#30ffc8
+palette = 11=#FEFFD5
+palette = 12=#6ee7ff
+palette = 13=#FFEBFE
+palette = 14=#30FFF2
+palette = 15=#b4f9f8
+
+# ── Keybindings ──────────────────────────────────────────────────────────────
+# alacritty: Shift+Return → ESC + CR (chars = "\r")
+keybind = shift+enter=text:\x1b\r

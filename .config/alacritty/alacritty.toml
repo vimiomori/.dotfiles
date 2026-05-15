@@ -21,7 +21,7 @@ history = 100000
 normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
 
-size = 9
+size = 12
 
 [colors.cursor]
 cursor = "#30FFF2"

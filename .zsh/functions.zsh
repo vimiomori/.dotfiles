@@ -16,8 +16,7 @@ ga() {
 }
 
 # Remove worktree and branch from within active worktree directory.
-unalias gd 2>/dev/null
-gd() {
+wt-rm() {
   local cwd worktree root branch
 
   cwd="$(pwd)"
@@ -145,12 +144,13 @@ tsl() {
 
 # Ctrl+G D  -  jump to a ghq-managed repo
 peco-src() {
-  local selected_dir=$(ghq list --full-path | peco --query "$LBUFFER")
+  local selected_dir
+  selected_dir=$(ghq list --full-path | fzf --query "$LBUFFER")
   if [[ -n "$selected_dir" ]]; then
     BUFFER="cd ${selected_dir}"
     zle accept-line
   fi
-  zle clear-screen
+  zle reset-prompt
 }
 zle -N peco-src
 bindkey 'gd' peco-src
@@ -158,8 +158,8 @@ bindkey 'gd' peco-src
 # Ctrl+O  -  checkout a recent branch (or cd into its worktree)
 peco-git-checkout() {
   local branch selected
-  selected=$(git branch --sort=-committerdate | grep -v 'HEAD' | peco)
-  [[ -z "$selected" ]] && zle clear-screen && return
+  selected=$(git branch --sort=-committerdate | grep -v 'HEAD' | fzf)
+  [[ -z "$selected" ]] && zle reset-prompt && return
 
   branch=$(echo "$selected" | sed 's/^[+* ]*//')
 
@@ -181,8 +181,20 @@ bindkey '^o' peco-git-checkout
 
 # Ctrl+D D  -  delete a branch interactively
 peco-git-delete-branch() {
-  git branch --sort=-committerdate | peco | xargs git branch -d
+  git branch --sort=-committerdate | fzf | xargs git branch -d
   zle accept-line
 }
 zle -N peco-git-delete-branch
 bindkey '^dd' peco-git-delete-branch
+
+peco-claude() {
+  local selected_dir
+  selected_dir=$(find -L ~/claude_projects -maxdepth 1 -mindepth 1 -type d | fzf --query "$LBUFFER")
+  if [[ -n "$selected_dir" ]]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle -N peco-claude
+bindkey 'cc' peco-claude
